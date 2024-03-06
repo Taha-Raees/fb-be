@@ -6,7 +6,8 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-
+const cors = require('cors');
+app.use(cors());
 // Create a Product
 app.post('/products', async (req, res) => {
   const { name, category, description, Maintenance } = req.body;
