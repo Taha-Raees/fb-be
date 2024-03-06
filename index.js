@@ -10,21 +10,20 @@ const cors = require('cors');
 app.use(cors());
 // Create a Product
 app.post('/products', async (req, res) => {
-  const { name, category, description, Maintenance } = req.body;
-  try {
-    const newProduct = await prisma.product.create({
-      data: {
-        name,
-        category,
-        description,
-        Maintenance: new Date(Maintenance),
-      },
-    });
-    res.json(newProduct);
-  } catch (error) {
-    res.status(400).json({ error: "Failed to create product" });
-  }
-});
+    const { name, category, description } = req.body;
+    try {
+      const newProduct = await prisma.product.create({
+        data: {
+          name,
+          category,
+          description,
+        },
+      });
+      res.json(newProduct);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to create product" });
+    }
+  });
 
 // Read Products
 app.get('/products', async (req, res) => {
@@ -35,6 +34,33 @@ app.get('/products', async (req, res) => {
     res.status(400).json({ error: "Failed to get products" });
   }
 });
+app.get('/products', async (req, res) => {
+  try {
+    const products = await prisma.product.findMany();
+    res.json(products);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to get products" });
+  }
+});
+app.get('/products/:id', async (req, res) => {
+    const { id } = req.params; // Get the ID from the request parameters
+  
+    try {
+      const product = await prisma.product.findUnique({
+        where: {
+          id: Number(id), // Ensure the ID is a number if it's stored as a numeric value in the database
+        },
+      });
+  
+      if (product) {
+        res.json(product);
+      } else {
+        res.status(404).json({ error: "Product not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get product" });
+    }
+  });
 
 // Update a Product
 app.put('/products/:id', async (req, res) => {
