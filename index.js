@@ -1,11 +1,9 @@
+const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-
-
-module.exports = app;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -71,4 +69,6 @@ app.delete('/products/:id', async (req, res) => {
 });
 
 // Start the server
-
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
