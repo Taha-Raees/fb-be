@@ -21,9 +21,10 @@ app.post('/products', async (req, res) => {
       });
       res.json(newProduct);
     } catch (error) {
-      res.status(400).json({ error: "Failed to create product" });
+      console.error("Error creating product:", error);
+      res.status(400).json({ error: "Failed to create product", details: error.message });
     }
-  });
+});
 
 // Read Products
 app.get('/products', async (req, res) => {
