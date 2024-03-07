@@ -10,6 +10,8 @@ const cors = require('cors');
 app.use(cors());
 // Create a Product
 app.post('/products', async (req, res) => {
+    console.log(req.body); // Log the request body
+
     const { name, category, description } = req.body;
     try {
       const newProduct = await prisma.product.create({
