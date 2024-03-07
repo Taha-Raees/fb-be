@@ -11,7 +11,6 @@ app.use(cors());
 // Create a Product
 app.post('/products', async (req, res) => {
     console.log(req.body); // Log the request body
-
     const { name, category, description } = req.body;
     try {
         if (name === undefined || category === undefined || description === undefined) {
@@ -22,7 +21,6 @@ app.post('/products', async (req, res) => {
           name,
           category,
           description,
-          
         },
       });
       res.json(newProduct);
