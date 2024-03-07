@@ -14,6 +14,9 @@ app.post('/products', async (req, res) => {
 
     const { name, category, description } = req.body;
     try {
+        if (name === undefined || category === undefined || description === undefined) {
+            return res.status(400).json({ error: "Missing required fields" });
+          }
       const newProduct = await prisma.product.create({
         data: {
           name,
