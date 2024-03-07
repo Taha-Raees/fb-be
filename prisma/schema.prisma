@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model product {
+model foodtruck {
   id            Int      @id @default(autoincrement())
   name          String
   category      String
@@ -15,5 +15,5 @@ model product {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
-  @@map("products")
+  @@map("foodtrucks")
 }
