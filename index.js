@@ -64,7 +64,7 @@ app.get('/products/:id', async (req, res) => {
 // Update a Product
 app.put('/products/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, category, description, Maintenance } = req.body;
+  const { name, category, description } = req.body;
   try {
     const updatedProduct = await prisma.product.update({
       where: { id: Number(id) },
@@ -72,7 +72,6 @@ app.put('/products/:id', async (req, res) => {
         name,
         category,
         description,
-        Maintenance: new Date(Maintenance),
       },
     });
     res.json(updatedProduct);
