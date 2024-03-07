@@ -22,6 +22,7 @@ app.post('/products', async (req, res) => {
           name,
           category,
           description,
+          maintenance,
         },
       });
       res.json(newProduct);
