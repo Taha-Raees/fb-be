@@ -41,14 +41,6 @@ app.get('/products', async (req, res) => {
     res.status(400).json({ error: "Failed to get products" });
   }
 });
-app.get('/products', async (req, res) => {
-  try {
-    const products = await prisma.product.findMany();
-    res.json(products);
-  } catch (error) {
-    res.status(400).json({ error: "Failed to get products" });
-  }
-});
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params; // Get the ID from the request parameters
   
