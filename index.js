@@ -12,7 +12,7 @@ app.use(cors());
 app.post('/products', async (req, res) => {
     console.log(req.body); // Log the request body
 
-    const { name, category, description } = req.body;
+    const { name, category, description ,maintenance} = req.body;
     try {
         if (name === undefined || category === undefined || description === undefined) {
             return res.status(400).json({ error: "Missing required fields" });
