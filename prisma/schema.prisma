@@ -21,6 +21,7 @@ model foodItem {
   id            Int      @id @default(autoincrement())
   name          String
   category      String
+  quantity      Int
   expiry        String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -31,7 +32,7 @@ model inventory {
   id            Int      @id @default(autoincrement())
   name          String
   category      String
-  expiry        String
+  quantity      Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
