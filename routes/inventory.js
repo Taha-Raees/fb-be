@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Create a inventory
 router.post('/', async (req, res) => {
-  const { name, category, expiry } = req.body;
+  const { name, category, expiry, } = req.body;
   try {
     if (!name || !category || !expiry) {
       return res.status(400).json({ error: "Missing required fields" });
