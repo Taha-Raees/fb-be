@@ -5,13 +5,13 @@ const router = express.Router();
 
 // Create a foodItem
 router.post('/', async (req, res) => {
-  const { name, category, expiry } = req.body;
+  const { name, category, quantity ,expiry } = req.body;
   try {
-    if (!name || !category || !expiry) {
+    if (!name || !category || !expiry ||!quantity) {
       return res.status(400).json({ error: "Missing required fields" });
     }
     const newfoodItem = await prisma.foodItem.create({
-      data: { name, category, expiry, quantity },
+      data: { name, category, quantity ,expiry},
     });
     res.json(newfoodItem);
   } catch (error) {
@@ -60,8 +60,8 @@ router.put('/:id', async (req, res) => {
       data: {
         name,
         category,
-        expiry,
         quantity,
+        expiry,
       },
     });
     res.json(updatedfoodItem);
