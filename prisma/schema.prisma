@@ -17,3 +17,23 @@ model foodtruck {
   
   @@map("foodtrucks")
 }
+model foodItem {
+  id            Int      @id @default(autoincrement())
+  name          String
+  category      String
+  expiry        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("foodItems")
+}
+model inventory {
+  id            Int      @id @default(autoincrement())
+  name          String
+  category      String
+  expiry        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("inventorys")
+}
