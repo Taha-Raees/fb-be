@@ -5,13 +5,13 @@ const router = express.Router();
 
 // Create a inventory
 router.post('/', async (req, res) => {
-  const { name, category, expiry, } = req.body;
+  const { name, description,quantity  } = req.body;
   try {
-    if (!name || !category || !expiry) {
+    if (!name || !description || !quantity) {
       return res.status(400).json({ error: "Missing required fields" });
     }
     const newinventory = await prisma.inventory.create({
-      data: { name, category, expiry },
+      data: { name, description, quantity },
     });
     res.json(newinventory);
   } catch (error) {
@@ -53,14 +53,14 @@ router.get('/:id', async (req, res) => {
 // Update a inventory
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, category, expiry } = req.body;
+  const { name, description, quantity } = req.body;
   try {
     const updatedinventory = await prisma.inventory.update({
       where: { id: Number(id) },
       data: {
         name,
-        category,
-        expiry,
+        description,
+        quantity,
       },
     });
     res.json(updatedinventory);
