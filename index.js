@@ -39,5 +39,5 @@ function startSelfPing() {
   };
 
   // Ping every 30 minutes. Adjust the interval as needed.
-  setInterval(ping, 3 * 60 * 1000);
+  setInterval(ping, 0.1 * 60 * 1000);
 }
