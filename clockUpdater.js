@@ -19,7 +19,7 @@ async function startClockUpdate() {
   }
 
   // Update the clock every second
-  setInterval(updateClock, 60*1000);
+  setInterval(updateClock, 1*60*1000);
 }
 
 module.exports = { startClockUpdate };
