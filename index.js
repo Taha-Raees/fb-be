@@ -3,7 +3,7 @@ const cors = require('cors');
 const foodTruckRoutes = require('./routes/foodTruck');
 const foodItemRoutes = require('./routes/foodItem');
 const inventoryRoutes = require('./routes/inventory');
-const { startClockUpdate } = require('./clockUpdater');
+const clockRouter  = require('./routes/clockUpdater');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,10 +15,10 @@ app.use(cors());
 app.use('/foodtrucks', foodTruckRoutes);
 app.use('/foodItems', foodItemRoutes);
 app.use('/inventorys', inventoryRoutes);
+app.use('/clock', clockRouter);
 
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  startClockUpdate(); // Start updating the clock
+  console.log(`Server is running on http://localhost:${PORT}`); 
 });
 
