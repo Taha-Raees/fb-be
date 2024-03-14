@@ -3,7 +3,7 @@ const cors = require('cors');
 const foodTruckRoutes = require('./routes/foodTruck');
 const foodItemRoutes = require('./routes/foodItem');
 const inventoryRoutes = require('./routes/inventory');
-const clockRouter  = require('./routes/clockUpdater');
+const clockRouter  = require('./routes/clock');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

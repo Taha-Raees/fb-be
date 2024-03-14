@@ -1,16 +1,15 @@
 // routes/clock.js
 
 const express = require('express');
-const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-
+const router = express.Router();
 /**
  * POST endpoint to update the clock timestamp.
  */
 // In your clock update route (assuming Express)
 
-router.post('/updateClock', async (req, res) => {
+router.post('/', async (req, res) => {
   const { clockId, timestamp } = req.body;
 
   try {
@@ -25,3 +24,5 @@ router.post('/updateClock', async (req, res) => {
     res.status(500).json({ error: "Failed to update clock", details: error.message });
   }
 });
+
+module.exports = router;
