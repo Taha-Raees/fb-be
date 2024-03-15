@@ -5,6 +5,8 @@ const foodItemRoutes = require('./routes/foodItem');
 const inventoryRoutes = require('./routes/inventory');
 const clockRouter  = require('./routes/clock');
 const userRoutes = require('./routes/userRoutes');
+const stageRoutes = require('./routes/stages');
+const cardRoutes = require('./routes/cards');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,6 +20,8 @@ app.use('/foodItems', foodItemRoutes);
 app.use('/inventorys', inventoryRoutes);
 app.use('/clock', clockRouter);
 app.use('/users', userRoutes);
+app.use('/stages', stageRoutes);
+app.use('/cards', cardRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`); 

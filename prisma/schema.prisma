@@ -23,6 +23,18 @@ model User {
   lastName  String?
   role      Role
 }
+model Stage {
+  id     Int    @id @default(autoincrement())
+  title  String
+  cards  Card[]
+}
+
+model Card {
+  id      Int     @id @default(autoincrement())
+  content String
+  stageId Int
+  stage   Stage   @relation(fields: [stageId], references: [id])
+}
 
 model foodtruck {
   id            Int      @id @default(autoincrement())
