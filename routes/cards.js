@@ -22,18 +22,24 @@ router.post('/', async (req, res) => {
 
 // Update a card's content
 router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-  try {
-    const updatedCard = await prisma.card.update({
-      where: { id: parseInt(id) },
-      data: { content },
-    });
-    res.json(updatedCard);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+    const { id } = req.params;
+    const { content, stageId } = req.body; // Include stageId in the destructuring
+  
+    try {
+      // Update the card with both new content and new stageId
+      const updatedCard = await prisma.card.update({
+        where: { id: parseInt(id) },
+        data: {
+          content,
+          stageId: stageId ? parseInt(stageId) : undefined, // Ensure stageId is included only if provided
+        },
+      });
+      res.json(updatedCard);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
+  
 
 // Move a card to another stage
 router.put('/move/:id', async (req, res) => {
