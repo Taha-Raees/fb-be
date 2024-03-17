@@ -7,9 +7,6 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const { name, category,cost, quantity ,expiry } = req.body;
   try {
-    if (!name || !category ||!cost ||!quantity || !expiry) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
     const newfoodItem = await prisma.foodItem.create({
       data: { name, category,cost, quantity ,expiry},
     });
