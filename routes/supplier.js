@@ -54,9 +54,6 @@ router.delete('/:id', async (req, res) => {
     res.status(400).json({ error: "Failed to delete supplier" });
   }
 });
-
-module.exports = router;
-// Get Suppliers by Item ID
 router.get('/byItem/:itemId', async (req, res) => {
   const { itemId } = req.params;
   try {
@@ -79,3 +76,6 @@ router.get('/byItem/:itemId', async (req, res) => {
     res.status(400).json({ error: "Failed to get suppliers by item", details: error.message });
   }
 });
+module.exports = router;
+// Get Suppliers by Item ID
+
