@@ -58,5 +58,17 @@ router.delete('/:itemId/:supplierId', async (req, res) => {
     res.status(400).json({ error: "Failed to delete itemSupplier relationship" });
   }
 });
-
+router.get('/byItem/:itemId', async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const itemSuppliers = await prisma.itemSupplier.findMany({
+      where: {
+        itemId: Number(itemId),
+      },
+    });
+    res.json(itemSuppliers);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to get itemSupplier relationships for the specified item" });
+  }
+});
 module.exports = router;
