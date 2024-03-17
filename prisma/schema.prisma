@@ -39,9 +39,9 @@ model foodItem {
   id            Int      @id @default(autoincrement())
   name          String
   category      String
-  cost          Float
+  cost          Float?
   quantity      Int
-  expiry        String
+  expiry        String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   itemSuppliers     ItemSupplier[]
