@@ -56,3 +56,26 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+// Get Suppliers by Item ID
+router.get('/byItem/:itemId', async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    // Use Prisma to query the itemSuppliers table and include supplier details
+    const itemSuppliers = await prisma.itemSupplier.findMany({
+      where: {
+        itemId: parseInt(itemId),
+      },
+      include: {
+        Supplier: true, // Include supplier details in the response
+      },
+    });
+
+    // Extract the suppliers from the itemSuppliers response
+    const suppliers = itemSuppliers.map(itemSupplier => itemSupplier.Supplier);
+
+    res.json(suppliers);
+  } catch (error) {
+    console.error("Error fetching suppliers by item:", error);
+    res.status(400).json({ error: "Failed to get suppliers by item", details: error.message });
+  }
+});
