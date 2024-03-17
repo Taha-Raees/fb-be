@@ -5,6 +5,8 @@ const foodItemRoutes = require('./routes/foodItem');
 const inventoryRoutes = require('./routes/inventory');
 const clockRouter  = require('./routes/clock');
 const userRoutes = require('./routes/userRoutes');
+const itemSupplierRoutes = require('./routes/itemSupplier');
+const supplierRoutes = require('./routes/supplier');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,6 +20,8 @@ app.use('/foodItems', foodItemRoutes);
 app.use('/inventorys', inventoryRoutes);
 app.use('/clock', clockRouter);
 app.use('/users', userRoutes);
+app.use('/supplier', supplierRoutes);
+app.use('/itemSupplier', itemSupplierRoutes);
 
 
 
