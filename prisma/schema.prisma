@@ -23,20 +23,7 @@ model User {
   lastName  String?
   role      Role
 }
-model Stage {
-  id     Int    @id @default(autoincrement())
-  title  String
-  cards  Card[]
-}
 
-model Card {
-  id      Int     @id @default(autoincrement())
-  content String
-  stageId Int
-  stage   Stage   @relation(fields: [stageId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
 
 model foodtruck {
   id            Int      @id @default(autoincrement())
@@ -52,12 +39,29 @@ model foodItem {
   id            Int      @id @default(autoincrement())
   name          String
   category      String
+  cost          Float
   quantity      Int
   expiry        String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  itemSuppliers     ItemSupplier[]
   
   @@map("foodItems")
+}
+model Supplier {
+  id                Int             @id @default(autoincrement())
+  name              String
+  contact           String
+  itemSuppliers     ItemSupplier[]
+}
+model ItemSupplier {
+  itemId            Int
+  supplierId        Int
+  price             Float            // Negotiated price for the item from this supplier
+  orderHistory      String?          // Optional: Details or JSON of past orders
+  Item              foodItem             @relation(fields: [itemId], references: [id])
+  Supplier          Supplier         @relation(fields: [supplierId], references: [id])
+  @@id([itemId, supplierId])
 }
 model inventory {
   id            Int      @id @default(autoincrement())
