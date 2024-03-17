@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "foodItems" ALTER COLUMN "expiry" DROP NOT NULL,
+ALTER COLUMN "cost" DROP NOT NULL;
