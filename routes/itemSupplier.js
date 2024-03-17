@@ -63,12 +63,16 @@ router.get('/byItem/:itemId', async (req, res) => {
   try {
     const itemSuppliers = await prisma.itemSupplier.findMany({
       where: {
-        itemId: Number(itemId),
+        itemId: parseInt(itemId),
+      },
+      include: {
+        Supplier: true, // This tells Prisma to also fetch the related Supplier data
       },
     });
     res.json(itemSuppliers);
   } catch (error) {
-    res.status(400).json({ error: "Failed to get itemSupplier relationships for the specified item" });
+    console.error("Error fetching item suppliers:", error);
+    res.status(400).json({ error: "Failed to fetch item suppliers", details: error.message });
   }
 });
 module.exports = router;
