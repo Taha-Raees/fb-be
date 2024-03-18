@@ -41,7 +41,7 @@ model foodItem {
   category      String
   cost          Float?
   quantity      Int
-  expiry        String?
+  expiry        String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   itemSuppliers     ItemSupplier[]
@@ -55,13 +55,21 @@ model Supplier {
   itemSuppliers     ItemSupplier[]
 }
 model ItemSupplier {
-  itemId            Int
-  supplierId        Int
-  price             Float            // Negotiated price for the item from this supplier
-  orderHistory      String?          // Optional: Details or JSON of past orders
-  Item              foodItem             @relation(fields: [itemId], references: [id])
-  Supplier          Supplier         @relation(fields: [supplierId], references: [id])
-  @@id([itemId, supplierId])
+  id              Int             @id @default(autoincrement())
+  itemId          Int
+  supplierId      Int
+  price           Float
+  Item            foodItem        @relation(fields: [itemId], references: [id])
+  Supplier        Supplier        @relation(fields: [supplierId], references: [id])
+  orderHistories  OrderHistory[]
+}
+
+model OrderHistory {
+  id            Int          @id @default(autoincrement())
+  itemSupplierId  Int
+  ItemSupplier  ItemSupplier @relation(fields: [itemSupplierId], references: [id])
+  quantity      Int
+  addedAt       DateTime     @default(now())
 }
 model inventory {
   id            Int      @id @default(autoincrement())
