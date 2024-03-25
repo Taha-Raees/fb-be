@@ -14,7 +14,6 @@ enum Role {
   ATTENDEE
 }
 
-// User model
 model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
@@ -23,73 +22,82 @@ model User {
   lastName  String?
   role      Role
 }
+
 model Event {
-    id        Int      @id @default(autoincrement())
-    title     String
-    location  String?
-    startDate DateTime
-    endDate   DateTime
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id         Int          @id @default(autoincrement())
+  title      String
+  location   String?
+  startDate  DateTime
+  endDate    DateTime
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  FoodTrucks FoodTruck[] @relation("EventFoodTrucks")
+  Equipments Inventory[] @relation("EventEquipment")
+  FoodItems  FoodItem[]  @relation("EventFoodItems")
 }
 
-
-model foodtruck {
-  id            Int      @id @default(autoincrement())
-  name          String
-  category      String
-  description   String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
+model FoodTruck {
+  id          Int       @id @default(autoincrement())
+  name        String
+  category    String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Events      Event[] @relation("EventFoodTrucks")
   @@map("foodtrucks")
 }
-model foodItem {
-  id            Int      @id @default(autoincrement())
+
+model FoodItem {
+  id            Int            @id @default(autoincrement())
   name          String
   category      String
   cost          Float?
   quantity      Int
   expiry        String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  itemSuppliers     ItemSupplier[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  ItemSuppliers ItemSupplier[]
+  Events Event[] @relation("EventFoodItems")
   
   @@map("foodItems")
 }
+
 model Supplier {
-  id                Int             @id @default(autoincrement())
-  name              String
-  contact           String
-  itemSuppliers     ItemSupplier[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  contact       String
+  ItemSuppliers ItemSupplier[]
 }
+
 model ItemSupplier {
-  id              Int             @id @default(autoincrement())
-  itemId          Int
-  supplierId      Int
-  price           Float
-  Item            foodItem        @relation(fields: [itemId], references: [id])
-  Supplier        Supplier        @relation(fields: [supplierId], references: [id])
-  orderHistories  OrderHistory[]
+  id            Int           @id @default(autoincrement())
+  itemId        Int
+  supplierId    Int
+  price         Float
+  Item          FoodItem      @relation(fields: [itemId], references: [id])
+  Supplier      Supplier      @relation(fields: [supplierId], references: [id])
+  OrderHistories OrderHistory[]
 }
 
 model OrderHistory {
   id            Int          @id @default(autoincrement())
-  itemSupplierId  Int
+  itemSupplierId Int
   ItemSupplier  ItemSupplier @relation(fields: [itemSupplierId], references: [id])
   quantity      Int
   addedAt       DateTime     @default(now())
 }
-model inventory {
-  id            Int      @id @default(autoincrement())
-  name          String
-  description   String
-  quantity      Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
+
+model Inventory {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  quantity    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Events        Event[] @relation("EventEquipment")
   @@map("inventorys")
 }
+
 model Clock {
   id        Int      @id @default(autoincrement())
   timestamp DateTime @default(now())

@@ -69,15 +69,23 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a foodItem
+// Delete a foodItem and its associations
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
+    // First, delete all ItemSupplier associations for this foodItem
+    await prisma.itemSupplier.deleteMany({
+      where: { itemId: Number(id) },
+    });
+
+    // Then, delete the foodItem itself
     await prisma.foodItem.delete({
       where: { id: Number(id) },
     });
+
     res.status(204).send(); // No content to send back
   } catch (error) {
-    res.status(400).json({ error: "Failed to delete foodItem" });
+    res.status(400).json({ error: "Failed to delete foodItem and its associations", details: error.message });
   }
 });
 
