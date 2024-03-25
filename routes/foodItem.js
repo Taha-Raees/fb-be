@@ -69,7 +69,6 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a foodItem
-// Delete a foodItem and its associations
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
