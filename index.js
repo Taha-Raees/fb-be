@@ -7,6 +7,7 @@ const clockRouter  = require('./routes/clock');
 const userRoutes = require('./routes/userRoutes');
 const itemSupplierRoutes = require('./routes/itemSupplier');
 const supplierRoutes = require('./routes/supplier');
+const eventRoutes = require('./routes/events');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,7 +23,7 @@ app.use('/clock', clockRouter);
 app.use('/users', userRoutes);
 app.use('/supplier', supplierRoutes);
 app.use('/itemSupplier', itemSupplierRoutes);
-
+app.use('/events', eventRoutes);
 
 
 app.listen(PORT, () => {
