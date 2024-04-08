@@ -61,6 +61,7 @@ router.get('/', async (req, res) => {
     const events = await prisma.event.findMany({
       include: {
         posSystems: true, // Assuming Event-PosSystem relation is defined in Prisma schema
+        numOfPos: true, // Assuming Event-PosSystem relation is defined in Prisma schema
         // Include other relations here if necessary
       }
     });
