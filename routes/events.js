@@ -55,6 +55,20 @@ router.delete('/:id', async (req, res) => {
     res.status(400).json({ error: "Failed to delete event", details: error.message });
   }
 });
+// Fetch all events with related data
+router.get('/', async (req, res) => {
+  try {
+    const events = await prisma.event.findMany({
+      include: {
+        posSystems: true, // Assuming Event-PosSystem relation is defined in Prisma schema
+        // Include other relations here if necessary
+      }
+    });
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch events", details: error.message });
+  }
+});
 
 // Add a food truck to an event
 router.post('/events/:eventId/foodTrucks/:foodTruckId', async (req, res) => {
