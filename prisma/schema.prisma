@@ -26,48 +26,35 @@ model User {
 
 // Event
 model Event {
-    id        Int         @id @default(autoincrement())
-    title     String
-    location  String?
-    startDate DateTime
-    endDate   DateTime
-    numOfPos  Int?
-    posSystems PosSystem[] // Add this line: a list of POS systems related to the event
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
+  id        Int         @id @default(autoincrement())
+  title     String
+  location  String?
+  startDate DateTime
+  endDate   DateTime
+  numOfPos  Int?
+  posSystems PosSystem[] // Relation indicating an event can have multiple POS systems
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
+
 model PosSystem {
-  id            Int             @id @default(autoincrement())
-  identifier    String          // A unique identifier, like "POS-1"
-  event         Event           @relation(fields: [eventId], references: [id])
-  eventId       Int             // Connects each POS system to an event
-  orders        Order[]         // Relation to Orders made on this POS
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id        Int     @id @default(autoincrement())
+  eventId   Int
+  event     Event   @relation(fields: [eventId], references: [id])
+  orders    Order[] // Relation indicating a POS system can have multiple orders
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Model for individual orders
 model Order {
-  id            Int             @id @default(autoincrement())
-  posSystem     PosSystem       @relation(fields: [posSystemId], references: [id])
-  posSystemId   Int             // Connects the order to the POS system
-  items         OrderItem[]     // Relation to items in the order
-  total         Float           // Total price charged for the order
-  received      Float           // Amount of money received
-  change        Float           // Change given back
-  timestamp     DateTime        // When the order was placed
+  id          Int      @id @default(autoincrement())
+  posSystemId Int
+  posSystem   PosSystem @relation(fields: [posSystemId], references: [id])
+  totalPrice  Float
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
-
-// Model for items in an order
-model OrderItem {
-  id            Int             @id @default(autoincrement())
-  order         Order           @relation(fields: [orderId], references: [id])
-  orderId       Int             // Connects an order item to its order
-  quantity      Int             // Quantity of the food item ordered
-  price         Float           // Price at which the item is sold
-  costPrice     Float           // Cost price of the item
-}
-
 
 
 model foodtruck {

@@ -71,112 +71,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Add a food truck to an event
-router.post('/events/:eventId/foodTrucks/:foodTruckId', async (req, res) => {
-    const { eventId, foodTruckId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          foodTrucks: {
-            connect: { id: parseInt(foodTruckId) },
-          },
-        },
-      });
+// Fetch a single event by ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const event = await prisma.event.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        posSystems: true, // Includes POS systems related to the event
+      },
+    });
+    if (event) {
       res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to add food truck to event", details: error.message });
+    } else {
+      res.status(404).json({ error: "Event not found" });
     }
-  });
-  
-  // Remove a food truck from an event
-router.delete('/events/:eventId/foodTrucks/:foodTruckId', async (req, res) => {
-    const { eventId, foodTruckId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          foodTrucks: {
-            disconnect: { id: parseInt(foodTruckId) },
-          },
-        },
-      });
-      res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to remove food truck from event", details: error.message });
-    }
-  });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch event", details: error.message });
+  }
+});
 
-  // Add a food item to an event
-router.post('/events/:eventId/foodItems/:foodItemId', async (req, res) => {
-    const { eventId, foodItemId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          foodItems: {
-            connect: { id: parseInt(foodItemId) },
-          },
-        },
-      });
-      res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to add food item to event", details: error.message });
-    }
-  });
+// Existing create, update, and delete routes remain unchanged
 
-  // Remove a food item from an event
-router.delete('/events/:eventId/foodItems/:foodItemId', async (req, res) => {
-    const { eventId, foodItemId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          foodItems: {
-            disconnect: { id: parseInt(foodItemId) },
-          },
-        },
-      });
-      res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to remove food item from event", details: error.message });
-    }
-  });
-  
-  // Add equipment to an event
-router.post('/events/:eventId/equipment/:inventoryId', async (req, res) => {
-    const { eventId, inventoryId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          equipments: {
-            connect: { id: parseInt(inventoryId) },
-          },
-        },
-      });
-      res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to add equipment to event", details: error.message });
-    }
-  });
-  
-  // Remove equipment from an event
-router.delete('/events/:eventId/equipment/:inventoryId', async (req, res) => {
-    const { eventId, inventoryId } = req.params;
-    try {
-      const event = await prisma.event.update({
-        where: { id: parseInt(eventId) },
-        data: {
-          equipments: {
-            disconnect: { id: parseInt(inventoryId) },
-          },
-        },
-      });
-      res.json(event);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to remove equipment from event", details: error.message });
-    }
-  });
-  
 module.exports = router;
