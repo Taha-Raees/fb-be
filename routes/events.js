@@ -90,6 +90,22 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch event", details: error.message });
   }
 });
+// routes/posSystems.js (new or extend existing file)
+
+// Example of a route to fetch POS systems for a specific event
+router.get('/event/:eventId/posSystems', async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const posSystems = await prisma.posSystem.findMany({
+      where: { eventId: parseInt(eventId) }
+    });
+    res.json(posSystems);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch POS systems", details: error.message });
+  }
+});
+
+// Similar routes for creating, updating, and deleting POS systems
 
 // Existing create, update, and delete routes remain unchanged
 
