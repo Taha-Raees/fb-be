@@ -20,20 +20,28 @@ router.post('/', async (req, res) => {
   const { title, location, startDate, endDate, noOfPos } = req.body;
   try {
     const event = await prisma.event.create({
-      data: { title, location, startDate, endDate },
-      include: { posSystems: true },
+      data: {
+        title, 
+        location, 
+        startDate, 
+        endDate,
+        numOfPos: parseInt(noOfPos)  // Make sure to parse `noOfPos` as an integer
+      },
+      include: { posSystems: true }, // Include POS systems in the response
     });
 
-    // If noOfPos is provided, create the specified number of POS systems
-    if (noOfPos && noOfPos > 0) {
+    // Create POS systems if `noOfPos` is specified and greater than 0
+    if (noOfPos > 0) {
       for (let i = 0; i < noOfPos; i++) {
         await prisma.posSystem.create({
-          data: { eventId: event.id }
+          data: {
+            eventId: event.id
+          }
         });
       }
     }
 
-    // Fetch the newly created event with its POS systems to return in response
+    // Retrieve and return the newly created event with POS systems
     const createdEvent = await prisma.event.findUnique({
       where: { id: event.id },
       include: { posSystems: true }
@@ -44,6 +52,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ error: "Failed to create event", details: error.message });
   }
 });
+
 
 
 // Update an event
