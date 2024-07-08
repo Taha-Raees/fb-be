@@ -47,14 +47,18 @@ model PosSystem {
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
+  id          String   @id
   posSystemId Int
   posSystem   PosSystem @relation(fields: [posSystemId], references: [id])
+  items       Json     // This field can store an array of items as JSON
   totalPrice  Float
-  status      String
+  received    Float
+  change      Float
+  timestamp   DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
 
 
 model foodtruck {
