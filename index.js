@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const itemSupplierRoutes = require('./routes/itemSupplier');
 const supplierRoutes = require('./routes/supplier');
 const eventRoutes = require('./routes/events');
-const orderRoutes = require('./routes/orderRoutes'); 
+const eventPosOrdersRouter = require('./routesy/eventPosOrders'); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,7 +25,7 @@ app.use('/users', userRoutes);
 app.use('/supplier', supplierRoutes);
 app.use('/itemSupplier', itemSupplierRoutes);
 app.use('/events', eventRoutes);
-app.use('/orders', orderRoutes);
+app.use('/eventPosOrders', eventPosOrdersRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`); 

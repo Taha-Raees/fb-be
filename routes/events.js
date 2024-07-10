@@ -8,11 +8,7 @@ const router = express.Router();
 // Fetch all events
 router.get('/', async (req, res) => {
   try {
-    const events = await prisma.event.findMany({
-      include: {
-        posSystems: true, // Assuming Event-PosSystem relation is defined in Prisma schema
-      }
-    });
+    const events = await prisma.event.findMany();
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch events", details: error.message });
@@ -25,12 +21,11 @@ router.post('/', async (req, res) => {
   try {
     const event = await prisma.event.create({
       data: {
-        title,
-        location,
-        startDate,
+        title, 
+        location, 
+        startDate, 
         endDate,
-        numOfPos: parseInt(numOfPos) || null,  // Change noOfPos to numOfPos
-        ordersData: {} // Initialize ordersData as an empty object
+        numOfPos: parseInt(numOfPos) || null  // Change noOfPos to numOfPos
       },
       include: { posSystems: true },
     });
@@ -54,34 +49,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:eventId/ordersData', async (req, res) => {
-  const { eventId } = req.params;
-  const { ordersData } = req.body;
-  try {
-    const event = await prisma.event.update({
-      where: { id: parseInt(eventId) },
-      data: { ordersData },
-    });
-    res.json(event);
-  } catch (error) {
-    res.status(400).json({ error: "Failed to update orders data", details: error.message });
-  }
-});
 
-
-router.post('/event/:eventId/ordersData', async (req, res) => {
-  const { eventId } = req.params;
-  const { ordersData } = req.body;
-  try {
-    const event = await prisma.event.update({
-      where: { id: parseInt(eventId) },
-      data: { ordersData },
-    });
-    res.json(event);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to save orders data", details: error.message });
-  }
-});
 
 
 // Update an event
