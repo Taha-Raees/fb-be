@@ -8,7 +8,11 @@ const router = express.Router();
 // Fetch all events
 router.get('/', async (req, res) => {
   try {
-    const events = await prisma.event.findMany();
+    const events = await prisma.event.findMany({
+      include: {
+        posSystems: true, // Assuming Event-PosSystem relation is defined in Prisma schema
+      }
+    });
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch events", details: error.message });
@@ -21,11 +25,12 @@ router.post('/', async (req, res) => {
   try {
     const event = await prisma.event.create({
       data: {
-        title, 
-        location, 
-        startDate, 
+        title,
+        location,
+        startDate,
         endDate,
-        numOfPos: parseInt(numOfPos) || null  // Change noOfPos to numOfPos
+        numOfPos: parseInt(numOfPos) || null,  // Change noOfPos to numOfPos
+        ordersData: {} // Initialize ordersData as an empty object
       },
       include: { posSystems: true },
     });
@@ -49,7 +54,34 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:eventId/ordersData', async (req, res) => {
+  const { eventId } = req.params;
+  const { ordersData } = req.body;
+  try {
+    const event = await prisma.event.update({
+      where: { id: parseInt(eventId) },
+      data: { ordersData },
+    });
+    res.json(event);
+  } catch (error) {
+    res.status(400).json({ error: "Failed to update orders data", details: error.message });
+  }
+});
 
+
+router.post('/event/:eventId/ordersData', async (req, res) => {
+  const { eventId } = req.params;
+  const { ordersData } = req.body;
+  try {
+    const event = await prisma.event.update({
+      where: { id: parseInt(eventId) },
+      data: { ordersData },
+    });
+    res.json(event);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save orders data", details: error.message });
+  }
+});
 
 
 // Update an event
@@ -128,9 +160,63 @@ router.get('/event/:eventId/posSystems', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch POS systems", details: error.message });
   }
 });
+router.get('/event/:eventId/posSystem/:posSystemId/orders', async (req, res) => {
+  const { eventId, posSystemId } = req.params;
+  try {
+      const orders = await prisma.order.findMany({
+          where: {
+              posSystemId: parseInt(posSystemId),
+              posSystem: {
+                  eventId: parseInt(eventId)
+              }
+          },
+          include: {
+              posSystem: true // Optionally include details about the POS system
+          }
+      });
+      res.json(orders);
+  } catch (error) {
+      res.status(500).json({ error: "Failed to fetch orders", details: error.message });
+  }
+});
 
-// Similar routes for creating, updating, and deleting POS systems
+// POST - Create a new order for a specific POS system within a specific event
+router.post('/event/:eventId/posSystem/:posSystemId/orders', async (req, res) => {
+    const { eventId, posSystemId } = req.params;
+    const {id, items, totalPrice, received, change, timestamp } = req.body;
 
-// Existing create, update, and delete routes remain unchanged
+    try {
+        // First, validate the existence of the POS system within the specified event
+        const posSystem = await prisma.posSystem.findFirst({
+            where: {
+                id: parseInt(posSystemId),
+                eventId: parseInt(eventId)
+            }
+        });
+
+        if (!posSystem) {
+            return res.status(404).json({ error: "Specified POS system not found within the event" });
+        }
+
+        // Create a new order linked to the POS system
+        const newOrder = await prisma.order.create({
+            data: {
+                id,
+                posSystemId: parseInt(posSystemId),
+                items: items,
+                totalPrice: parseFloat(totalPrice),
+                received: parseFloat(received),
+                change: parseFloat(change),
+                timestamp: new Date(timestamp)
+            }
+        });
+
+        res.status(201).json(newOrder);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to create order", details: error.message });
+    }
+});
+
+
 
 module.exports = router;

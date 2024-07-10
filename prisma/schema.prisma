@@ -26,38 +26,26 @@ model User {
 
 // Event
 model Event {
-  id        Int         @id @default(autoincrement())
-  title     String
-  location  String?
-  startDate DateTime
-  endDate   DateTime
-  numOfPos  Int?
+  id         Int         @id @default(autoincrement())
+  title      String
+  location   String?
+  startDate  DateTime
+  endDate    DateTime
+  numOfPos   Int?
   posSystems PosSystem[] // Relation indicating an event can have multiple POS systems
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  ordersData Json        // This field will store all orders data as JSON
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model PosSystem {
   id        Int     @id @default(autoincrement())
   eventId   Int
   event     Event   @relation(fields: [eventId], references: [id])
-  orders    Order[] // Relation indicating a POS system can have multiple orders
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Order {
-  id          String   @id
-  posSystemId Int
-  posSystem   PosSystem @relation(fields: [posSystemId], references: [id])
-  items       Json     // This field can store an array of items as JSON
-  totalPrice  Float
-  received    Float
-  change      Float
-  timestamp   DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
 
 
 
