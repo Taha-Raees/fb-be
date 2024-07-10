@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const itemSupplierRoutes = require('./routes/itemSupplier');
 const supplierRoutes = require('./routes/supplier');
 const eventRoutes = require('./routes/events');
-const eventPosOrdersRouter = require('./routesy/eventPosOrders'); 
+const eventPosOrdersRouter = require('./routes/eventPosOrders'); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
